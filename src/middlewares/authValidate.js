@@ -5,12 +5,11 @@ import usersRepository from "../repositories/usersRepository.js";
 import sessionRepository from "../repositories/sessionRepository.js";
 
 export async function validateSignUp(req, res, next) {
-  const { bodySanitized } = res.locals;
-
+  const user = req.body;
   try {
-    const { email } = bodySanitized;
+    
 
-    const result = await usersRepository.getUserByEmail(email);
+    const result = await usersRepository.getUserByEmail(user.email);
 
     if (result.rowCount > 0) {
       return res.status(422).send({
@@ -18,7 +17,6 @@ export async function validateSignUp(req, res, next) {
       });
     }
 
-    res.locals.body = bodySanitized;
     next();
   } catch (e) {
     console.log(e);
@@ -28,8 +26,9 @@ export async function validateSignUp(req, res, next) {
 
 export async function validateSignIn(req, res, next) {
   try {
-    const { email, password } = res.locals.bodySanitized;
-
+    const { email, password } = req.body;
+    console.log(req.body);
+    console.log(res);
     const result = await usersRepository.getUserByEmail(email);
 
     if (result.rowCount === 0) {
@@ -46,7 +45,7 @@ export async function validateSignIn(req, res, next) {
       });
     }
 
-    res.locals.user = user;
+    
     next();
   } catch (e) {
     console.log(e);
@@ -81,7 +80,7 @@ export async function validateToken(req, res, next) {
       });
     }
 
-    res.locals.userId = result.rows[0].userId;
+    
 
     next();
   } catch (e) {

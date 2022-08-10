@@ -1,13 +1,11 @@
-import bcrypt from 'bcrypt';
 import connection from '../databases/postgres.js';
 
-async function createUser(username, pictureUrl, email, plainPassword ) {
-    const SALT = 10;
-    const passwordHash = bcrypt.hashSync(plainPassword, SALT);
+async function createUser(username,pictureUrl,email, password ) {
+    
     return connection.query(`
-      INSERT INTO users (username, email, password,pictureUrl) 
+      INSERT INTO "users" (email, password, username, "pictureUrl") 
       VALUES ($1, $2, $3, $4)`, 
-      [username, email, passwordHash,pictureUrl]);
+      [ email, password, username, pictureUrl]);
   }
 
   async function getUserByEmail(email) {
