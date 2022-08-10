@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import connection from '../databases/postgres.js';
 
-async function createUser(username, email, plainPassword,pictureUrl) {
+async function createUser(username, pictureUrl, email, plainPassword ) {
     const SALT = 10;
     const passwordHash = bcrypt.hashSync(plainPassword, SALT);
     return connection.query(`

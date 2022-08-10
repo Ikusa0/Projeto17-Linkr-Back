@@ -7,10 +7,10 @@ export const signInSchema = joi.object({
   
 export const signUpSchema = joi.object({
 	username: joi.string().required(),
+  pictureUrl: joi.string().uri().required(),
 	email: joi.string().email().required(),
 	password: joi.string().required(),
-	confirmPassword: joi.string().valid(joi.ref("password")).required(),
-    pictureUrl: joi.string().uri().required()
+	confirmPassword: joi.string().valid(joi.ref("password")).required()
 })
 
   
