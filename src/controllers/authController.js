@@ -29,7 +29,7 @@ export async function signUp(req, res) {
   
 	  const data = { userId: id, sessionId: rows[0].id };
 	  const secretKey = process.env.JWT_SECRET;
-	  const expiresIn = { expiresIn: "1h" };
+	  const expiresIn = { expiresIn: 60 };
   
 	  const token = jwt.sign(data, secretKey, expiresIn);
   
