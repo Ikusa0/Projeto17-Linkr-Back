@@ -27,8 +27,6 @@ export async function validateSignUp(req, res, next) {
 export async function validateSignIn(req, res, next) {
   try {
     const { email, password } = req.body;
-    console.log(req.body);
-    console.log(res);
     const result = await usersRepository.getUserByEmail(email);
 
     if (result.rowCount === 0) {

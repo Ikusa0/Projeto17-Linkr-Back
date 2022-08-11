@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import usersRepository from "./../repositories/usersRepository.js";
-import SessionRepository from "./../repositories/sessionRepository.js";
+import sessionRepository from "./../repositories/sessionRepository.js";
 
 export async function signUp(req, res) {
 
@@ -12,7 +12,7 @@ export async function signUp(req, res) {
     const hashedPassword = bcrypt.hashSync(password, SALT);
 
     try {
-        
+
         await usersRepository.createUser(username, pictureUrl, email, hashedPassword);
 
         res.status(201).send("successfully register");
@@ -22,29 +22,30 @@ export async function signUp(req, res) {
     }
 }
 
+
 export async function signIn(req, res) {
-    console.log("Executando SignIn");
+    const {email, password} = req.body;
+    const {rows: users} = await usersRepository.getUserByEmail(email);
+    const [user] = users;
+    if (!user) {
+        return res.sendStatus(401);
+    }
+    
     try {
-        const {id, name} = req.locals.user;
-
-        await SessionRepository.updateSession(id);
-
-        const {rows} = await SessionRepository.createSession(id);
-
-        const data = {
-            userId: id,
-            sessionId: rows[0].id
-        };
-        const secretKey = process.env.JWT_SECRET;
-        const expiresIn = {
-            expiresIn: 60
-        };
-
-        const token = jwt.sign(data, secretKey, expiresIn);
-
-        res.status(200).send({name, token});
+        if (bcrypt.compareSync(password, user.password)) {
+            const expiresIn = {
+                expiresIn: "1h",
+            };
+            const token =jwt.sign({user}, process.env.JWT_SECRET, expiresIn); ;
+            await sessionRepository.createSession(user.id);
+            return res.status(201).send({token});
+          }
+        
+          res.sendStatus(401); 
+      
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
+
 }
