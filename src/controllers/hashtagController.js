@@ -1,5 +1,3 @@
-import connection from "../databases/postgres.js";
-
 //Repositories
 import { HashtagRepository } from "../repositories/hashtagRepository.js";
 
