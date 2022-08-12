@@ -1,9 +1,18 @@
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
+//Import routes
+import hashtagRouter from "./routes/hashtagRouter.js";
+
 dotenv.config();
 
 const app = express();
 app.use(cors(), json());
 
-app.listen(process.env.PORT, () => console.log(`Server is listening on port ${process.env.PORT}`));
+//Routes
+app.use(hashtagRouter);
+
+app.listen(process.env.PORT, () =>
+  console.log(`Server is listening on port ${process.env.PORT}`)
+);
