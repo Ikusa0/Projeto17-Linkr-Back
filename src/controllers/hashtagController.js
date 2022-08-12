@@ -3,11 +3,13 @@ import { HashtagRepository } from "../repositories/hashtagRepository.js";
 
 export async function getHashtags(_req, res) {
   try {
-    const hashtags = await HashtagRepository.getHashtag();
+    const {rows: name} = await HashtagRepository.getHashtag();
 
-    return res.send(hashtags).status(200);
+    console.log(name);
+
+    return res.send(name).status(200);
   } catch (error) {
-    return res.sendStatus(500);
+    return res.send(error.message).status(500);
   }
 }
 
