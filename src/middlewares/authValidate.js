@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import usersRepository from "../repositories/usersRepository.js";
-import sessionRepository from "../repositories/sessionRepository.js";
 
 export async function validateSignUp(req, res, next) {
   const user = req.body;

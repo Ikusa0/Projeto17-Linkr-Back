@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import usersRepository from "./../repositories/usersRepository.js";
-import sessionRepository from "./../repositories/sessionRepository.js";
 
 export async function signUp(req, res) {
 
@@ -37,7 +36,6 @@ export async function signIn(req, res) {
                 expiresIn: "1h",
             };
             const token =jwt.sign({user}, process.env.JWT_SECRET, expiresIn); ;
-            await sessionRepository.createSession(user.id);
             return res.status(201).send({token});
           }
         
