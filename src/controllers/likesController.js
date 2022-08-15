@@ -5,11 +5,10 @@ export async function postLike(req, res) {
     const { id } = req.params;
 
     try {
-        const teste = await likesRepository.postLike(user_id, parseInt(id));
-        console.log(teste)
+        await likesRepository.postLike(user_id, parseInt(id));
         return res.sendStatus(201);
     } catch (error) {
-        res.sendStatus(500);
+        return res.send(error.message).status(500);
     }
 }
 
@@ -22,6 +21,6 @@ export async function getLikes(req, res) {
         const data = { count, ...{ username } }
         return res.send(data).status(200)
     } catch (error) {
-        res.sendStatus(500)
+        return res.send(error.message).status(500);
     }
 }
